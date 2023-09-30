@@ -8,7 +8,7 @@
                @dblclick="isEdit = true"
           >
             <div class="relative" v-if="isEdit">
-              <input class="editable-task" type="text" @keyup.esc="isEdit = false" v-focus />
+              <input class="editable-task" type="text" @keyup.esc="isEdit = false" v-focus @keyup.enter="updateTask" />
             </div>
             <span v-else>{{ task.name }}</span>
           </div>
@@ -24,12 +24,18 @@ import { computed, ref } from "vue";
 import TaskActions from "./TaskActions.vue";
 
 const props = defineProps({
-task: Object
+  task: Object
 });
 
+const emit = defineEmits(['updated']);
 const isEdit = ref(false);
 const completedClass = computed(() => props.task.is_completed ? 'completed' : '')
 const vFocus = {
   mounted: (el) => el.focus()
+}
+const updateTask = event => {
+  const updatedTask = { ...props.task, name: event.target.value };
+  isEdit.value = false;
+  emit('updated', updatedTask);
 }
 </script>
