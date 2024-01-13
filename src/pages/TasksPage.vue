@@ -43,10 +43,10 @@ import { allTasks, createTask, updateTask, completeTask, removeTask } from '@/ht
 import Tasks from "@/components/tasks/Tasks.vue";
 import NewTask from "../components/tasks/NewTask.vue";
 
-const store = useTaskStore()
+const store = useTasksStore();
+const { completedTasks, uncompletedTasks } = storeToRefs(store);
 
-const { task } = storeToRefs(store)
-
+// const { task } = storeToRefs(store);
 // store.$patch({
 //     task: {
 //         name: "First task updated using $patch",
@@ -59,11 +59,11 @@ const tasks = ref([]); // ref - to make reactive data
 onMounted(async () => {
     const { data } = await allTasks();
     tasks.value = data.data;
-    console.log(task.value);
+  /*console.log(completedTasks);
+  console.log(uncompletedTasks);
+  console.log(uncompletedCount);*/
 });
 
-const uncompletedTasks = computed(() => tasks.value.filter(task => !task.is_completed));
-const completedTasks = computed(() => tasks.value.filter(task => task.is_completed));
 const showToggleCompletedBtn = computed(
     () => uncompletedTasks.value.length > 0 && completedTasks.value.length > 0
 );
