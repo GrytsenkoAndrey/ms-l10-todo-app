@@ -45,23 +45,12 @@ import NewTask from "../components/tasks/NewTask.vue";
 
 const store = useTasksStore();
 const { completedTasks, uncompletedTasks } = storeToRefs(store);
-
-// const { task } = storeToRefs(store);
-// store.$patch({
-//     task: {
-//         name: "First task updated using $patch",
-//         is_completed: true
-//     }
-// });
+const { fetchAllTasks } = store;
 
 const tasks = ref([]); // ref - to make reactive data
 
 onMounted(async () => {
-    const { data } = await allTasks();
-    tasks.value = data.data;
-  /*console.log(completedTasks);
-  console.log(uncompletedTasks);
-  console.log(uncompletedCount);*/
+    await fetchAllTasks();
 });
 
 const showToggleCompletedBtn = computed(
